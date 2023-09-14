@@ -1,6 +1,9 @@
-#ifndef	PUSH_SWAP
-# define PUSH_SWAP
+#ifndef	PUSH_SWAP_H
+# define PUSH_SWAP_H
+# include <stdio.h>
 # include <unistd.h>
+# include <stdlib.h>
+# include <limits.h>
 # include "Libft/libft.h"
 
 typedef enum s_boolean
@@ -22,5 +25,6 @@ typedef struct s_push_swap
 	t_stack *b;
 }				t_push_swap;
 
+int	error(char *message);
 
 #endif

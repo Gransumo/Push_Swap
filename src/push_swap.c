@@ -20,57 +20,53 @@
 
 /* FUNCION VERRIFICAR REPETIDOS */
 
-t_stack *list_init(t_stack *list)
+void	check_repeat(t_push_swap *ps, int n)
 {
-	list = NULL;
-	return (list);
-}
-
-void	ft_free(char **mx)
-{
-	int	i;
-
-	i = 0;
-	while (mx[i])
+	while (ps->a)
 	{
-		free (mx[i]);
-		i++;
-	}
-	free (mx);
-}
-
-char	**mat_concat(char **m1, char **m2)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	j = 0;
-	while (m1[i++])
-		;
-	while (m2[j++])
-		;
-	m1 = malloc(sizeof(char *) * (i + j) - 1);
-	j = 0;
-	while (m2[j] != NULL)
-		m1[i + j] = m2[j++];
-	m1[i + j] = NULL;
-	ft_free (m2);
-}
-
-char	**get_char_stack(int argc, char **argv)
-{
-	char	**stack;
-	char	**b_stack;
-	int		i;
-
-	i = 1;
-	while (i <= argc)
-	{
-		b_stack = ft_split(argv[i], ' ');
-		i++;
+		if (n == ps->a->value)
+			error("THERE IS A REPITED NUM");
+		ps->a = ps->a->next;
 	}
 	
+}
+
+void	check_num_rules(char *s, t_push_swap *ps)
+{
+	int i;
+
+	i = 0;
+	while (s[i++])
+	{
+		if (ft_isdigit(s[i]) == 0)
+		{
+			
+			error("A NUMBER IS NOT AN INTEGER");
+		}
+	}
+	if (ft_atoi(s) > INT_MAX)
+	{
+		
+		error("A NUMBER IS GREATER THAN INT_MAX");
+	}
+	if (ft_atoi(s) < INT_MIN)
+	{
+
+		error("A NUMBER IS LOWER THAN INT_MIN");
+	}
+	check_repeat(ps, ft_atoi(s));
+}
+
+void	add_values(t_stack **list, char **c_stack, t_push_swap *ps)
+{
+	int i;
+
+	i = 0;
+	while (c_stack[i])
+	{
+		check_num_rules(c_stack[i], ps);
+		i++;
+	}
 }
 
 /**
@@ -89,32 +85,36 @@ char	**get_char_stack(int argc, char **argv)
  * @param	argv matrix with the values to proccess
  * @return	The Stack with values, if any rue is not met, returns <b>NULL</b>
  */
-t_stack *get_stack(int argc, char **argv)
+void	init_stack(int argc, char **argv, t_push_swap *ps)
 {
-	char	**stack;
-	t_stack	list;
-	stack = get_char_stack(argc, argv);
+	char	**c_stack;
+	int i;
+
+	i = 1;
+	c_stack = NULL;
+	ps->a = NULL;
+	while (i < argc)
+	{
+		c_stack = ft_split(argv[i], ' ');
+		add_values(&ps->a, c_stack, ps);
+		i++;
+	}
 }
 
-t_push_swap *init_vars(int argc, char **argv)
+t_push_swap init(int argc, char **argv)
 {
 	t_push_swap ps;
 
-	ps.a = list_init(ps.a);
-	ps.b = list_init(ps.b);
-
-	ps.a = get_stack(argc, argv);
-	if (ps.a == NULL)
-		return (NULL);
-	return (&ps);
+	ps.b = NULL;
+	init_stack(argc, argv, &ps);
+	return (ps);
 }
 
 int	main(int argc, char **argv)
 {
-	t_push_swap *ps;
+	t_push_swap ps;
 
-	ps = init_vars(argc, argv);
-	if (ps == NULL)
-		return (0);
+	ps = init(argc, argv);
+
 	return (0);
 }
