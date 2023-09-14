@@ -4,20 +4,13 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <limits.h>
-# include "Libft/libft.h"
+# include "../Libft/libft.h"
 
 typedef enum s_boolean
 {
 	FALSE = 0,
 	TRUE = 1
 }			t_boolean;
-
-typedef struct s_stack
-{
-	int value;
-	int index;
-	struct s_stack *next;
-}		t_stack;
 
 typedef struct s_push_swap
 {

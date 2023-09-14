@@ -7,7 +7,7 @@ OBJS	= ${SRCS:.c=.o}
 
 AR		= ar rc
 
-LIBFT_DIR	= libft/
+LIBFT_DIR	= ../libft/
 LIBFT_A		= libft.a
 LIBFT		= $(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
@@ -17,7 +17,7 @@ all:	${NAME}
 	${CC} ${CFLAGS} -c $< -o ${<:.c=.o}
 
 ${NAME}:	${OBJS}
-	$(MAKE) -C $(LIBFT_DIR)
+	$(MAKE) -C $(LIBFT_DIR) bonus
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
 
 clean: 

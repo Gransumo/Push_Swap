@@ -33,38 +33,42 @@ void	check_repeat(t_push_swap *ps, int n)
 
 void	check_num_rules(char *s, t_push_swap *ps)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (s[i++])
 	{
 		if (ft_isdigit(s[i]) == 0)
 		{
-			
+			ft_lstclear(&ps->a, NULL);
 			error("A NUMBER IS NOT AN INTEGER");
 		}
 	}
 	if (ft_atoi(s) > INT_MAX)
 	{
-		
+		ft_lstclear(&ps->a, NULL);
 		error("A NUMBER IS GREATER THAN INT_MAX");
 	}
 	if (ft_atoi(s) < INT_MIN)
 	{
-
+		ft_lstclear(&ps->a, NULL);
 		error("A NUMBER IS LOWER THAN INT_MIN");
 	}
 	check_repeat(ps, ft_atoi(s));
 }
 
-void	add_values(t_stack **list, char **c_stack, t_push_swap *ps)
+void	add_values(t_push_swap *ps, char **c_stack)
 {
 	int i;
+	int n;
 
+	n = 0;
 	i = 0;
 	while (c_stack[i])
 	{
 		check_num_rules(c_stack[i], ps);
+		n = ft_atoi(c_stack[i]);
+		ft_lstadd_back(&ps->a, ft_lstnew(&n));
 		i++;
 	}
 }
@@ -96,7 +100,7 @@ void	init_stack(int argc, char **argv, t_push_swap *ps)
 	while (i < argc)
 	{
 		c_stack = ft_split(argv[i], ' ');
-		add_values(&ps->a, c_stack, ps);
+		add_values(ps, c_stack);
 		i++;
 	}
 }
