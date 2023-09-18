@@ -24,5 +24,6 @@ clean:
 	${RM} ${OBJS} ${OBJS_B}
 fclean:	clean
 	${RM} ${NAME}
+	$(MAKE) -C $(LIBFT_DIR) fclean
 re: fclean all
 .PHONY:	all clean fclean re bonus
