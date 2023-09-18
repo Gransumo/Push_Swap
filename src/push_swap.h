@@ -12,10 +12,15 @@ typedef enum s_boolean
 	TRUE = 1
 }			t_boolean;
 
+typedef struct s_list
+{
+	t_node *cabeza;
+}	t_list;
+
 typedef struct s_push_swap
 {
-	t_stack *a;
-	t_stack *b;
+	t_list *a;
+	t_list *b;
 }				t_push_swap;
 
 int	error(char *message);

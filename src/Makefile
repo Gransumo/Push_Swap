@@ -1,5 +1,5 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -glldb
+CFLAGS	= -Wall -Werror -Wextra -fsanitize=address -g
 RM		= rm -f
 NAME	= push_swap
 SRCS	= push_swap.c error.c
@@ -11,6 +11,10 @@ LIBFT_DIR	= ../libft/
 LIBFT_A		= libft.a
 LIBFT		= $(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
+PRINTF_PATH	= ../libft/Printf/
+PRINTF_A	= printf.a
+PRINTF		= $(addprefix $(PRINTF_PATH), $(PRINTF_A))
+
 all:	${NAME}
 
 .c.o:
@@ -18,7 +22,7 @@ all:	${NAME}
 
 ${NAME}:	${OBJS}
 	$(MAKE) -C $(LIBFT_DIR) bonus
-	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -o $(NAME)
+	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
 
 clean: 
 	${RM} ${OBJS} ${OBJS_B}

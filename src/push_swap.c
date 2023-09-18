@@ -20,13 +20,31 @@
 
 /* FUNCION VERRIFICAR REPETIDOS */
 
+void p_matrix(char **m)
+{
+	int i;
+
+	i = 0;
+	while (m[i])
+	{
+		ft_printf("%s\n", m[i]);
+		i++;
+	}
+}
+
 void	check_repeat(t_push_swap *ps, int n)
 {
-	while (ps->a)
+	t_node  *aux;
+
+	aux = ps->a->cabeza;
+	if (ps->a->cabeza)
 	{
-		if (n == ps->a->value)
-			error("THERE IS A REPITED NUM");
-		ps->a = ps->a->next;
+		while (aux->next)
+		{
+			if (n == aux->value)
+				error("THERE IS A REPITED NUM");
+			aux = aux->next;
+		}
 	}
 	
 }
@@ -36,22 +54,22 @@ void	check_num_rules(char *s, t_push_swap *ps)
 	int	i;
 
 	i = 0;
-	while (s[i++])
+	while (s[i])
 	{
-		if (ft_isdigit(s[i]) == 0)
+		if (ft_isdigit(s[i++]) == 0)
 		{
-			ft_lstclear(&ps->a, NULL);
+			ft_lstclear(&ps->a->cabeza, NULL);
 			error("A NUMBER IS NOT AN INTEGER");
 		}
 	}
 	if (ft_atoi(s) > INT_MAX)
 	{
-		ft_lstclear(&ps->a, NULL);
+		ft_lstclear(&ps->a->cabeza, NULL);
 		error("A NUMBER IS GREATER THAN INT_MAX");
 	}
 	if (ft_atoi(s) < INT_MIN)
 	{
-		ft_lstclear(&ps->a, NULL);
+		ft_lstclear(&ps->a->cabeza, NULL);
 		error("A NUMBER IS LOWER THAN INT_MIN");
 	}
 	check_repeat(ps, ft_atoi(s));
@@ -68,7 +86,7 @@ void	add_values(t_push_swap *ps, char **c_stack)
 	{
 		check_num_rules(c_stack[i], ps);
 		n = ft_atoi(c_stack[i]);
-		ft_lstadd_back(&ps->a, ft_lstnew(&n));
+		ft_lstadd_back(&ps->a->cabeza, ft_lstnew(n));
 		i++;
 	}
 }
@@ -96,7 +114,6 @@ void	init_stack(int argc, char **argv, t_push_swap *ps)
 
 	i = 1;
 	c_stack = NULL;
-	ps->a = NULL;
 	while (i < argc)
 	{
 		c_stack = ft_split(argv[i], ' ');
