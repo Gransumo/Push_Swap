@@ -1,12 +1,15 @@
 #include "push_swap.h"
 
-int	error(char *message)
-{
-	char	*mss;
+/* void delete_data(t_push_swap *ps)
+{}
+void error_mensaje(error)
+{} */
 
-	mss = ft_strjoin ("ERROR\n", message);
-	perror (mss);
-	free (mss);
-	exit (EXIT_FAILURE);
+void	error(t_push_swap *ps, t_error_code error)
+{
+	//delete_data(ps);
+	//error_mensaje(error);
+	free(ps->a);
+	exit (error);
 }
  
