@@ -20,23 +20,35 @@
 
 /* FUNCION VERRIFICAR REPETIDOS */
 
-void	add_values(t_push_swap *ps, char *arg)
+void	p_mat (char **m)
 {
 	int i;
-	int n;
-	char **m;
 
 	i = 0;
-	n = 0;
-	m = ft_split(arg, ' ');
 	while (m[i])
+		ft_printf("%s\n", m[i]);
+}
+
+
+
+void	add_values(t_push_swap *ps, char **args)
+{
+	int		i;
+	char	*n;
+
+	i = 0;
+	n = NULL;
+	while (args[i])
 	{
-		check_num_rules(m[i], ps);
-		n = ft_atoi(m[i]);
-		ft_lstadd_back(&ps->a, ft_lstnew(&n));
+		check_num_rules(args[i], ps);
+		n = ft_strdup(args[i]);
+		ft_lstadd_back(&ps->a, ft_lstnew(n));
 		i++;
 	}
 }
+
+
+
 
 /**
  * 		GET_STACK
@@ -56,27 +68,28 @@ void	add_values(t_push_swap *ps, char *arg)
  */
 void	init_stack(int argc, char **argv, t_push_swap *ps)
 {
-	int i;
-
+	int		i;
+	
 	i = 1;
 	while (i < argc)
 	{
-		add_values(ps, argv[i]);
+		add_values(ps, ft_split(argv[i], ' '));
 		i++;
 	}
 }
 
 void	ft_printvalue(void *n) {
-	ft_printf("%i\n", &n);
+	ft_printf("%s\n", n);
 }
 
 t_push_swap init(int argc, char **argv)
 {
 	t_push_swap ps;
 
+	ps.a = NULL;
 	ps.b = NULL;
 	init_stack(argc, argv, &ps);
-	ft_lstiter(ps.a, &ft_printvalue);
+	ft_lstiter(ps.a, ft_printvalue);
 	return (ps);
 }
 
@@ -84,6 +97,8 @@ int	main(int argc, char **argv)
 {
 	t_push_swap ps;
 
+	if (argc < 2 || argc > 500)
+		error (&ps, EC_WRONG_ARGS_NUM);
 	ps = init(argc, argv);
 
 	return (0);

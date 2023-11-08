@@ -1,31 +1,43 @@
 
 #include "push_swap.h"
 
-static void	check_repeat(t_push_swap *ps, int n)
+static void	check_repeat(t_push_swap *ps, char *n)
 {
-	while (ps->a)
+	t_list *aux;
+
+	aux = ps->a;
+	if (ps->a != NULL)
 	{
-		if (ps->a->content == &n)
-			error(ps, EC_NUM_REPEAT);
-		ps->a = ps->a->next;
+		while (aux)
+		{
+			if (ft_strncmp(aux->content, n, ft_strlen(n)) == 0)
+				error(ps, EC_NUM_REPEAT);
+			if (aux->next != NULL)
+				aux = aux->next;
+			else
+				break ;
+		}
 	}
-	ps->a = *ps->a_head;
 }
+
 
 void	check_num_rules(char *s, t_push_swap *ps)
 {
 	int	i;
+	int n;
 
 	i = 0;
+	n = ft_atoi(s);
 	while (s[i])
 	{
 		if (ft_isdigit(s[i++]) == 0)
 			error(ps, EC_NOT_INT_FOUND);
 	}
+	//ft_printf("%s\n", ft_atoi(s));
 	if (ft_atoi(s) > INT_MAX)
 		error(ps, EC_MAX_INT);
 	if (ft_atoi(s) < INT_MIN)
 		error(ps, EC_MIN_INT);
 	if (ft_lstsize(ps->a) != 0)
-		check_repeat(ps, ft_atoi(s));	
+		check_repeat(ps, s);	
 }
