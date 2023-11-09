@@ -1,34 +1,27 @@
 #include "push_swap.h"
 
+void free_list(t_list *head) {
+    t_list *current = head;
+    t_list *next;
+
+    while (current != NULL) {
+        next = current->next;
+        free(current->content);
+        free(current);
+        current = next; 
+    }
+}
+
 void delete_data(t_push_swap *ps)
 {
-	t_list *aux;
-
-	aux = ps->a;
 	if (ps->a != NULL)
-	{
-		ft_lstiter(ps->a, free);
-		while (ps->a)
-		{
-			aux = ps->a;
-			ps->a = ps->a->next;
-			free(aux);
-		}
-	}
+		free_list(ps->a);
 	if (ps->b != NULL)
-	{
-		ft_lstiter(ps->b, free);
-		while (ps->b)
-		{
-			aux = ps->b;
-			ps->b = ps->b->next;
-			free (aux);
-		}
-	}
+		free_list(ps->b);
 }
 void error_mensaje(error)
 {
-	ft_printf("%s", get_error_menssage[error]);
+	ft_printf("%s\n", g_error_menssage[error]);
 }
 
 void	error(t_push_swap *ps, t_error_code error)

@@ -1,105 +1,130 @@
-
 #include "push_swap.h"
-/* 
-	FASES DEL PPROGRAMA
-
-	1. PROCESAR INFORMACIÓN
-		1. ASIGNAR LOS VALORES A UN A LISTA CONNVIRTIENDOLOS TODOS A INT.
-			a. Split " " a todos los argumentos.
-			b. Verificar que SOLO hay caracteres numericos.
-
-
-	2. CHECKER DE ERRORES
-		1. NO SON ENTEROS
-		2. NUMERO MAYOR QUE UN INT
-		3. NUMEROS DUPLICADOS
-	3. 
-
-
- */
-
-/* FUNCION VERRIFICAR REPETIDOS */
-
-void	p_mat (char **m)
+/* -------------- INIT ----------------------------- */
+int	*ft_parse_int(char *n)
 {
-	int i;
+	int	*i;
 
-	i = 0;
-	while (m[i])
-		ft_printf("%s\n", m[i]);
+	i = (int *)malloc (sizeof(int));
+	if (i == NULL)
+		return (NULL);
+	*i = ft_atoi (n);
+	free (n);
+	return (i);
 }
-
-
 
 void	add_values(t_push_swap *ps, char **args)
 {
 	int		i;
-	char	*n;
+	int		*node_value;
 
 	i = 0;
-	n = NULL;
+	node_value = NULL;
 	while (args[i])
 	{
-		check_num_rules(args[i], ps);
-		n = ft_strdup(args[i]);
-		ft_lstadd_back(&ps->a, ft_lstnew(n));
+		check_num_rules (args[i], ps);
+		node_value = ft_parse_int (args[i]);
+		if (node_value == NULL)
+		{
+			ft_free (args);
+			error (ps, EC_MALLOC_ERROR);
+		}
+		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
 		i++;
 	}
+	free(args);
 }
 
-
-
-
-/**
- * 		GET_STACK
- * 
- * 	get_stack is a fuction which returns a stack-list whose values are the
- * 	param <b>argv</b> vales in the same order. If a param has many values
- * 	they are splited and joined separately.
- * 
- * 	The fuction verify these norms:
- *		1. Only numeric values.
- *		2. All values has to be integers.
- *		3. There should be not repeated values.
- * 
- * @param	argc argv len
- * @param	argv matrix with the values to proccess
- * @return	The Stack with values, if any rue is not met, returns <b>NULL</b>
- */
 void	init_stack(int argc, char **argv, t_push_swap *ps)
 {
 	int		i;
-	
+
 	i = 1;
 	while (i < argc)
-	{
-		add_values(ps, ft_split(argv[i], ' '));
-		i++;
-	}
+		add_values (ps, ft_split (argv[i++], ' '));
 }
 
-void	ft_printvalue(void *n) {
-	ft_printf("%s\n", n);
-}
-
-t_push_swap init(int argc, char **argv)
+t_push_swap	init(int argc, char **argv)
 {
-	t_push_swap ps;
+	t_push_swap	ps;
 
 	ps.a = NULL;
 	ps.b = NULL;
-	init_stack(argc, argv, &ps);
-	ft_lstiter(ps.a, ft_printvalue);
+	init_stack (argc, argv, &ps);
 	return (ps);
+}
+/* ------------------------------------------------------------------------------- */
+
+void	set_id(t_list **lst)
+{
+	t_list	*lst_aux;
+	t_list	*tmp;
+	int		id;
+	
+	id = 1;
+	lst_aux = *lst;
+	tmp = lst_aux;
+	while (id < ft_lstsize(*lst))
+	{
+		while (lst_aux != NULL)
+		{
+			if (tmp == NULL && lst_aux->id == 0)
+				tmp = lst_aux;
+			ft_printf("tmp: %i  aux: %i,  ", (*(int *)tmp->content), (*(int *)lst_aux->content));
+			if ((*(int *)tmp->content) > (*(int *)lst_aux->content) && lst_aux->id == 0)
+				tmp = lst_aux;
+			lst_aux = lst_aux->next;
+		}
+		ft_printf("\n");
+		tmp->id = id;
+		id++;
+		lst_aux = *lst;
+		tmp = NULL;
+	}
+}
+		/* while (lst_aux)
+		{
+			if ((*(int *)lst_aux->content) < (*(int *)tmp->content) && lst_aux->id == 0)
+				tmp = lst_aux;
+			ft_printf("id: %d\n\t%i\n", lst_aux->id, *(int *)lst_aux->content);
+			lst_aux = lst_aux->next;
+		} */
+
+
+void	ft_print_id(t_list *lst)
+{
+	t_list	*lst_aux;
+
+	lst_aux = lst;
+	while (lst_aux)
+	{
+		ft_printf ("%d\n", lst_aux->id);
+		lst_aux = lst_aux->next;
+	}
+}
+
+void	ft_print_content(t_list *lst)
+{
+	t_list	*lst_aux;
+
+	lst_aux = lst;
+	while (lst_aux)
+	{
+		ft_printf ("%d\n", *(int *)lst_aux->content);
+		lst_aux = lst_aux->next;
+	}
 }
 
 int	main(int argc, char **argv)
 {
-	t_push_swap ps;
+	t_push_swap	ps;
 
-	if (argc < 2 || argc > 500)
+	if (argc < 2 || argc >= 502)
 		error (&ps, EC_WRONG_ARGS_NUM);
 	ps = init(argc, argv);
-
+	set_id(&ps.a);
+	ft_print_content(ps.a);
+	ft_printf("\n\n\n");
+	ft_print_id(ps.a);
+	error(&ps, FINISH_PROGRAM);
 	return (0);
 }
