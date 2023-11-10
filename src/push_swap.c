@@ -1,47 +1,4 @@
 #include "push_swap.h"
-/* -------------- INIT ----------------------------- */
-int	*ft_parse_int(char *n)
-{
-	int	*i;
-
-	i = (int *)malloc (sizeof(int));
-	if (i == NULL)
-		return (NULL);
-	*i = ft_atoi (n);
-	free (n);
-	return (i);
-}
-
-void	add_values(t_push_swap *ps, char **args)
-{
-	int		i;
-	int		*node_value;
-
-	i = 0;
-	node_value = NULL;
-	while (args[i])
-	{
-		check_num_rules (args[i], ps);
-		node_value = ft_parse_int (args[i]);
-		if (node_value == NULL)
-		{
-			ft_free (args);
-			error (ps, EC_MALLOC_ERROR);
-		}
-		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
-		i++;
-	}
-	free(args);
-}
-
-void	init_stack(int argc, char **argv, t_push_swap *ps)
-{
-	int		i;
-
-	i = 1;
-	while (i < argc)
-		add_values (ps, ft_split (argv[i++], ' '));
-}
 
 t_push_swap	init(int argc, char **argv)
 {
@@ -50,67 +7,108 @@ t_push_swap	init(int argc, char **argv)
 	ps.a = NULL;
 	ps.b = NULL;
 	init_stack (argc, argv, &ps);
+	init_id(&ps.a);
 	return (ps);
 }
 /* ------------------------------------------------------------------------------- */
 
-void	set_id(t_list **lst)
+int	get_lst_index(t_list *lst_head, t_list *node)
 {
-	t_list	*lst_aux;
-	t_list	*tmp;
-	int		id;
-	
-	id = 1;
-	lst_aux = *lst;
-	tmp = lst_aux;
-	while (id < ft_lstsize(*lst))
+	int		index;
+	t_list	*aux;
+
+	index = 0;
+	aux = lst_head;
+	while (aux)
 	{
-		while (lst_aux != NULL)
-		{
-			if (tmp == NULL && lst_aux->id == 0)
-				tmp = lst_aux;
-			ft_printf("tmp: %i  aux: %i,  ", (*(int *)tmp->content), (*(int *)lst_aux->content));
-			if ((*(int *)tmp->content) > (*(int *)lst_aux->content) && lst_aux->id == 0)
-				tmp = lst_aux;
-			lst_aux = lst_aux->next;
+		if (aux == node)
+			return (index);
+		index++;
+		aux = aux->next;
+	}
+	return (-1);
+}
+
+void	ft_move(t_push_swap *ps, int index)
+{
+	int		size;
+	int		i;
+	t_list	*aux;
+
+	size = ft_lstsize(ps->a);
+	i = 1;
+	aux = ps->a;
+	if (index < size / 2)
+	{
+		while (i++ <= index)
+			ft_rotate(&ps->a);
+	}
+	else
+	{
+		while (i++ < size - index)
+			ft_rrotate(&ps->a);
+	}
+	ft_push(ps, B);
+}
+
+void	set_order(t_push_swap *ps)
+{
+	t_list	*lst;
+
+	lst = ps->a;
+	while (lst)
+	{
+		ft_printf("lst->id: %d\n", lst->id);
+		if ((lst->id & 1) == 0)
+		{	ft_printf("\tESTE SE MUEVE\n");
+			ft_move(ps, get_lst_index(ps->a, lst));
+			lst = ps->a;
+			continue ;
 		}
-		ft_printf("\n");
-		tmp->id = id;
-		id++;
-		lst_aux = *lst;
-		tmp = NULL;
+		lst = lst->next;
 	}
-}
-		/* while (lst_aux)
+	lst = ps->a;
+	while (lst)
+	{
+		if ((lst->id & 1) == 1)
 		{
-			if ((*(int *)lst_aux->content) < (*(int *)tmp->content) && lst_aux->id == 0)
-				tmp = lst_aux;
-			ft_printf("id: %d\n\t%i\n", lst_aux->id, *(int *)lst_aux->content);
-			lst_aux = lst_aux->next;
-		} */
-
-
-void	ft_print_id(t_list *lst)
+			ft_move(ps, get_lst_index(ps->a, lst));
+			lst = ps->a;
+			continue ;
+		}
+		lst = lst->next;
+	}
+}
+void	ft_swap_head_list(t_push_swap *ps)
 {
-	t_list	*lst_aux;
+	t_list	*aux;
 
-	lst_aux = lst;
-	while (lst_aux)
+	aux = ps->a;
+	ps->a = ps->b;
+	ps->b = aux;
+}
+
+void	move_id_bits(t_list *lst)
+{
+	t_list	*aux;
+
+	aux = lst;
+	while (aux)
 	{
-		ft_printf ("%d\n", lst_aux->id);
-		lst_aux = lst_aux->next;
+		aux->id = aux->id >> 1;
+		aux = aux->next;
 	}
 }
 
-void	ft_print_content(t_list *lst)
-{
-	t_list	*lst_aux;
+void	ft_radix_sort(t_push_swap *ps) {
+	t_list	*aux;
 
-	lst_aux = lst;
-	while (lst_aux)
+	aux = ps->a;
+	while (is_finished(ps->a) == 0)
 	{
-		ft_printf ("%d\n", *(int *)lst_aux->content);
-		lst_aux = lst_aux->next;
+		set_order(ps);
+		ft_swap_head_list(ps);
+		move_id_bits(ps->a);
 	}
 }
 
@@ -118,13 +116,20 @@ int	main(int argc, char **argv)
 {
 	t_push_swap	ps;
 
+	//atexit(ft_leaks);
 	if (argc < 2 || argc >= 502)
 		error (&ps, EC_WRONG_ARGS_NUM);
 	ps = init(argc, argv);
-	set_id(&ps.a);
-	ft_print_content(ps.a);
-	ft_printf("\n\n\n");
+	ft_radix_sort(&ps);
 	ft_print_id(ps.a);
+	ft_printf("\n\n");
+	//set_order(&ps);
+	ft_printf("\n\nA_id:\n");
+	ft_print_id(ps.a);
+	ft_printf("\n\nB_id:\n");
+	ft_print_id(ps.b);
+	ft_printf("\n\nHOLA");
+	ft_print_content(ps.a);
 	error(&ps, FINISH_PROGRAM);
 	return (0);
 }

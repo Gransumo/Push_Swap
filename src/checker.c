@@ -1,5 +1,19 @@
 #include "push_swap.h"
 
+int	is_finished(t_list *lst)
+{
+	t_list	*aux;
+
+	aux = lst;
+	while (aux)
+	{
+		if (aux->id != 0)
+			return (0);
+		aux = aux->next;
+	}
+	return (1);
+}
+
 static void	check_repeat(t_push_swap *ps, char *n)
 {
 	t_list	*aux;
@@ -26,9 +40,11 @@ void	check_num_rules(char *s, t_push_swap *ps)
 
 	i = 0;
 	n = ft_atoi (s);
+	if (n == 0 && ft_strncmp (s, "0", 1) != 0)
+		error (ps, EC_ATOI_ERROR);
 	while (s[i])
 	{
-		if (ft_isdigit (s[i++]) == 0)
+		if (ft_isdigit (s[i++]) == 0 && s[i - 1] != '-')
 			error (ps, EC_NOT_INT_FOUND);
 	}
 	if (ft_atoi (s) > INT_MAX)

@@ -1,7 +1,7 @@
 #include "push_swap.h"
 
-void free_list(t_list *head) {
-    t_list *current = head;
+static void free_list(t_list *lst) {
+    t_list *current = lst;
     t_list *next;
 
     while (current != NULL) {
@@ -30,7 +30,6 @@ void	error(t_push_swap *ps, t_error_code error)
 	if (error == OK)
 		error = EC_UNDEFINED;
 	error_mensaje(error);
-	
 	exit (error);
 }
  
