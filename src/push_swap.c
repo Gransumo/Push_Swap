@@ -17,7 +17,7 @@ int	get_lst_index(t_list *lst_head, t_list *node)
 	int		index;
 	t_list	*aux;
 
-	index = 0;
+	index = 1;
 	aux = lst_head;
 	while (aux)
 	{
@@ -33,22 +33,23 @@ void	ft_move(t_push_swap *ps, int index)
 {
 	int		size;
 	int		i;
-	t_list	*aux;
 
 	size = ft_lstsize(ps->a);
 	i = 1;
-	aux = ps->a;
-	if (index < size / 2)
+	if (index > size)
+		return ;
+	if (index <= ((size / 2) + (size % 2)))
 	{
-		while (i++ <= index)
+		while (i++ < index)
 			ft_rotate(&ps->a);
 	}
 	else
 	{
-		while (i++ < size - index)
+		while (i++ <= size - index + 1)
 			ft_rrotate(&ps->a);
 	}
 	ft_push(ps, B);
+	ft_rotate(&ps->b);
 }
 
 void	set_order(t_push_swap *ps)
@@ -58,9 +59,8 @@ void	set_order(t_push_swap *ps)
 	lst = ps->a;
 	while (lst)
 	{
-		ft_printf("lst->id: %d\n", lst->id);
 		if ((lst->id & 1) == 0)
-		{	ft_printf("\tESTE SE MUEVE\n");
+		{
 			ft_move(ps, get_lst_index(ps->a, lst));
 			lst = ps->a;
 			continue ;
@@ -112,24 +112,29 @@ void	ft_radix_sort(t_push_swap *ps) {
 	}
 }
 
+
 int	main(int argc, char **argv)
 {
 	t_push_swap	ps;
 
 	//atexit(ft_leaks);
 	if (argc < 2 || argc >= 502)
-		error (&ps, EC_WRONG_ARGS_NUM);
+		error (EC_WRONG_ARGS_NUM);
+	ft_parse(argc, argv);
 	ps = init(argc, argv);
 	ft_radix_sort(&ps);
-	ft_print_id(ps.a);
-	ft_printf("\n\n");
-	//set_order(&ps);
+	/* ft_print_id(ps.a);
 	ft_printf("\n\nA_id:\n");
-	ft_print_id(ps.a);
 	ft_printf("\n\nB_id:\n");
-	ft_print_id(ps.b);
 	ft_printf("\n\nHOLA");
+	ft_printf("\n\n");*/
+	//set_order(&ps);
+	//ft_move(&ps, 10);
+	ft_printf("\n\n");
 	ft_print_content(ps.a);
-	error(&ps, FINISH_PROGRAM);
+	ft_printf("\nB\n");
+	ft_print_content(ps.b);
+	delete_data(&ps);
+	error(FINISH_PROGRAM);
 	return (0);
 }

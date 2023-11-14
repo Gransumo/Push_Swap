@@ -39,12 +39,12 @@ static void	add_values(t_push_swap *ps, char **args)
 	node_value = NULL;
 	while (args[i])
 	{
-		check_num_rules (args[i], ps);
 		node_value = ft_parse_int (args[i]);
 		if (node_value == NULL)
 		{
 			ft_free (args);
-			error (ps, EC_MALLOC_ERROR);
+			delete_data(ps);
+			error (EC_MALLOC_ERROR);
 		}
 		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
 		i++;
@@ -79,7 +79,7 @@ void	init_stack(int argc, char **argv, t_push_swap *ps)
 	int		i;
 
 	i = 1;
-	while (i < argc)
+	while (i <= argc)
 		add_values (ps, ft_split (argv[i++], ' '));
 	init_id(&ps->a);
 }

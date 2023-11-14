@@ -51,10 +51,11 @@ void	init_stack(int argc, char **argv, t_push_swap *ps);
 void	init_id(t_list **lst);
 
 /* ERROR */
-void	error(t_push_swap *ps, t_error_code error);
+void	ft_parse(int argc, char **argv);
+void	error(t_error_code error);
+void	delete_data(t_push_swap *ps);
 /* UTILS */
 void	ft_free(char **m);
-void	check_num_rules(char *s, t_push_swap *ps);
 void	p_matrix(char **m);
 int		is_finished(t_list *lst);
 /* MOVES */

@@ -1,5 +1,19 @@
 #include "push_swap.h"
 
+int	is_finished(t_list *lst)
+{
+	t_list	*aux;
+
+	aux = lst;
+	while (aux)
+	{
+		if (aux->id != 0)
+			return (0);
+		aux = aux->next;
+	}
+	return (1);
+}
+
 void	p_matrix(char **m)
 {
 	int	i;
@@ -23,7 +37,4 @@ void	ft_free(char **m)
 }
 
 
-/* void ft_leaks(void)
-{
-	system("leaks push_swap");
-} */
+
