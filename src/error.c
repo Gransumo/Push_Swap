@@ -27,7 +27,6 @@ void error_mensaje(error)
 
 void	error(t_error_code error)
 {
-	//delete_data(ps);
 	if (error == OK)
 		error = EC_UNDEFINED;
 	error_mensaje(error);

@@ -79,7 +79,8 @@ void	init_stack(int argc, char **argv, t_push_swap *ps)
 	int		i;
 
 	i = 1;
-	while (i <= argc)
+	while (i < argc)
 		add_values (ps, ft_split (argv[i++], ' '));
 	init_id(&ps->a);
+	
 }

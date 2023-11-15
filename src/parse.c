@@ -1,51 +1,97 @@
 #include "push_swap.h"
 
-/* static void	is_repeat(int *n, int i)
+static t_boolean	is_repeat(char **argv)
 {
+	int	i;
 	int	j;
 
-	j = 0;
-	if (!n)
-		return ;
-	while (n[j])
+	i = 1;
+	if (!argv)
+		return (FALSE);
+	while (argv[i])
 	{
-		if (n[j] == i)
-			error (EC_NUM_REPEAT);
-		j++;
+		j = i + 1;
+		while (argv[j])
+		{
+			if (ft_strcmp (argv[i], argv[j]) == 0)
+			{
+				ft_printf ("argv[%i]: %s argv[%i]: %s\n", i, argv[i], j, argv[j]);
+				return (TRUE);
+			}
+			j++;
+		}
+		i++;
 	}
-} */
+	return (FALSE);
+}
 
-int	int_rules(const char *s)
+static t_boolean	is_integer(const char *s)
 {
-	long int	i;
+	int	i;
 
-	i = ft_atoi (s);
-	if (i == 0 && ft_strncmp (s, "0", 1) != 0)
-		error (EC_ATOI_ERROR);
+	i = 0;
+	if (!s)
+		return (FALSE);
 	while (s[i])
 	{
-		if (ft_isdigit (s[i++]) == 0 && ft_isdigit (s[i - 2]) == 1)
-			error (EC_NOT_INT_FOUND);
+		if (ft_isdigit (s[i]) == 0 && s[i] != '-')
+			return (FALSE);
+		if (s[i] == '-' && i != 0)
+			return (FALSE);
+		i++;
 	}
-	if (i > INT_MAX)
+	return (TRUE);
+}
+
+static void	over_int(const char *s)
+{
+	int	n;
+
+	if (!s)
+		return ;
+	n = ft_atoi (s);
+	if (n > INT_MAX)
 		error (EC_MAX_INT);
-	if (i < INT_MIN)
+	if (n < INT_MIN)
 		error (EC_MIN_INT);
-	return (i);
+}
+
+static t_boolean is_ordeneds(char **argv)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	if (!argv)
+		return (FALSE);
+	while (argv[i])
+	{
+		j = i + 1;
+		while (argv[j])
+		{
+			if (ft_atoi (argv[i]) > ft_atoi (argv[j]))
+				return (FALSE);
+			j++;
+		}
+		i++;
+	}
+	return (TRUE);
 }
 
 void	ft_parse(int argc, char **argv)
 {
-	int n[argc - 1];
-	int i;
-	int j;
+	int	i;
 
-	j = 0;
-	i = 0;
+	i = 1;
 	while (i < argc)
 	{
-		n[i] = int_rules(argv[i + 1]);
+		if (is_integer (argv[i]) == FALSE)
+			error (EC_NOT_INT_FOUND);
+		over_int (argv[i]);
 		i++;
 	}
-
+	if (is_repeat(argv) == TRUE)
+		error (EC_NUM_REPEAT);
+	if (is_ordeneds(argv) == TRUE)
+		error (EC_STACK_IS_ORDENED);
 }

@@ -36,5 +36,19 @@ void	ft_free(char **m)
 	free (m);
 }
 
+int	get_lst_index(t_list *lst_head, t_list *node)
+{
+	int		index;
+	t_list	*aux;
 
-
+	index = 1;
+	aux = lst_head;
+	while (aux)
+	{
+		if (aux == node)
+			return (index);
+		index++;
+		aux = aux->next;
+	}
+	return (-1);
+}

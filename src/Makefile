@@ -2,7 +2,7 @@ CC		= gcc
 CFLAGS	= -Wall -Werror -Wextra -fsanitize=address -g
 RM		= rm -f
 NAME	= push_swap
-SRCS	= push_swap.c error.c parse.c utils.c moves.c init.c prints.c
+SRCS	= push_swap.c error.c parse.c utils.c moves.c init.c prints.c exceptions.c radix_sort.c
 OBJS	= ${SRCS:.c=.o}
 
 AR		= ar rc
@@ -24,7 +24,7 @@ ${NAME}:	${OBJS}
 	$(MAKE) -C $(LIBFT_DIR) bonus
 	$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(PRINTF) -o $(NAME)
 
-clean: 
+clean:
 	${RM} ${OBJS} ${OBJS_B}
 fclean:	clean
 	${RM} ${NAME}
