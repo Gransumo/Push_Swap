@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-int	is_finished(t_list *lst)
+t_boolean	is_finished(t_list *lst)
 {
 	t_list	*aux;
 
@@ -8,10 +8,10 @@ int	is_finished(t_list *lst)
 	while (aux)
 	{
 		if (aux->id != 0)
-			return (0);
+			return (FALSE);
 		aux = aux->next;
 	}
-	return (1);
+	return (TRUE);
 }
 
 void	p_matrix(char **m)

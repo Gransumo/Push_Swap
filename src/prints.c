@@ -19,7 +19,7 @@ void	ft_print_content(t_list *lst)
 	lst_aux = lst;
 	while (lst_aux)
 	{
-		ft_printf ("%d\n", *(int *)lst_aux->content);
+		ft_printf ("%d ", *(int *)lst_aux->content);
 		lst_aux = lst_aux->next;
 	}
 }

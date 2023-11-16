@@ -1,6 +1,6 @@
 #include "push_swap.h"
 
-void	ft_swap(t_list **lst)
+void	ft_swap(t_push_swap *ps, t_list **lst)
 {
 	t_list	*aux;
 
@@ -12,6 +12,7 @@ void	ft_swap(t_list **lst)
 		aux->next = *lst;
 		*lst = aux;
 	}
+	ps->moves++;
 }
 
 void	ft_push(t_push_swap *ps, t_stack stack)
@@ -38,9 +39,10 @@ void	ft_push(t_push_swap *ps, t_stack stack)
 		*first = *second;
 		*second = aux;
 	}
+	ps->moves++;
 }
 
-void	ft_rotate(t_list **lst)
+void	ft_rotate(t_push_swap *ps, t_list **lst)
 {
 	t_list	*aux;
 
@@ -52,9 +54,10 @@ void	ft_rotate(t_list **lst)
 		ft_lstlast(*lst)->next = aux;
 		aux->next = NULL;
 	}
+	ps->moves++;
 }
 
-void	ft_rrotate(t_list **lst)
+void	ft_rrotate(t_push_swap *ps, t_list **lst)
 {
 	t_list	*aux;
 	t_list	*last;
@@ -71,16 +74,17 @@ void	ft_rrotate(t_list **lst)
 			aux = aux->next;
 		aux->next = NULL;
 	}
+	ps->moves++;
 }
 
 void	ft_rr(t_push_swap *ps)
 {
-	ft_rotate(&ps->a);
-	ft_rotate(&ps->b);
+	ft_rotate(ps, &ps->a);
+	ft_rotate(ps, &ps->b);
 }
 
 void	ft_rrr(t_push_swap *ps)
 {
-	ft_rrotate(&ps->a);
-	ft_rrotate(&ps->b);
+	ft_rrotate(ps, &ps->a);
+	ft_rrotate(ps, &ps->b);
 }

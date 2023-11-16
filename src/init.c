@@ -3,11 +3,12 @@
 static int	*ft_parse_int(char *n)
 {
 	int	*i;
-
+	//ft_printf ("%s", n);
 	i = (int *)malloc (sizeof(int));
 	if (i == NULL)
 		return (NULL);
 	*i = ft_atoi (n);
+	//ft_printf ("\t\t\t%s\t%d\n", n, ft_atoi (n));
 	free (n);
 	return (i);
 }
@@ -37,8 +38,10 @@ static void	add_values(t_push_swap *ps, char **args)
 
 	i = 0;
 	node_value = NULL;
+	//ft_printf ("..%s\t", *args);
 	while (args[i])
 	{
+		//ft_printf ("%s\t", args[i]);
 		node_value = ft_parse_int (args[i]);
 		if (node_value == NULL)
 		{
@@ -52,6 +55,26 @@ static void	add_values(t_push_swap *ps, char **args)
 	free(args);
 }
 
+/* static void	add_values(t_push_swap *ps, char *args)
+{
+	//int		i;
+	int		*node_value;
+
+	//i = 0;
+	node_value = NULL;
+	ft_printf ("..%s\t", args);
+		//ft_printf ("%s\t", args[i]);
+		node_value = ft_parse_int (args);
+		if (node_value == NULL)
+		{
+			//ft_free (args);
+			delete_data(ps);
+			error (EC_MALLOC_ERROR);
+		}
+		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
+		//i++;
+	//free(args);
+} */
 
 
 void	init_id(t_list **lst)
@@ -80,7 +103,7 @@ void	init_stack(int argc, char **argv, t_push_swap *ps)
 
 	i = 1;
 	while (i < argc)
-		add_values (ps, ft_split (argv[i++], ' '));
+		add_values (ps, ft_split(argv[i++], ' '));
 	init_id(&ps->a);
 	
 }

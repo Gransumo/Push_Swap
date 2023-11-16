@@ -1,8 +1,8 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS	= -Wall -Werror -Wextra #-fsanitize=address -g
 RM		= rm -f
 NAME	= push_swap
-SRCS	= push_swap.c error.c parse.c utils.c moves.c init.c prints.c exceptions.c radix_sort.c
+SRCS	= push_swap.c error.c parse.c utils.c moves.c init.c prints.c radix_sort.c
 OBJS	= ${SRCS:.c=.o}
 
 AR		= ar rc

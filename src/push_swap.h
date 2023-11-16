@@ -46,6 +46,7 @@ typedef struct s_push_swap
 {
 	t_list	*a;
 	t_list	*b;
+	int		moves;
 }				t_push_swap;
 /* INIT */
 t_push_swap	init(int argc, char **argv);
@@ -53,22 +54,21 @@ void	init_stack(int argc, char **argv, t_push_swap *ps);
 void	init_id(t_list **lst);
 /* RADIX SORT */
 void	set_order(t_push_swap *ps);
-void	ft_swap_head_list(t_push_swap *ps);
 void	move_id_bits(t_list *lst);
 /* ERROR */
 void	ft_parse(int argc, char **argv);
 void	error(t_error_code error);
 void	delete_data(t_push_swap *ps);
 /* UTILS */
-void	ft_free(char **m);
-void	p_matrix(char **m);
-//int		is_finished(t_list *lst);
+void		ft_free(char **m);
+void		p_matrix(char **m);
+t_boolean	is_finished(t_list *lst);
 int		get_lst_index(t_list *lst_head, t_list *node);
 /* MOVES */
-void	ft_swap(t_list **lst);
+void	ft_swap(t_push_swap *ps, t_list **lst);
 void	ft_push(t_push_swap *ps, t_stack stack);
-void	ft_rotate(t_list **lst);
-void	ft_rrotate(t_list **lst);
+void	ft_rotate(t_push_swap *ps, t_list **lst);
+void	ft_rrotate(t_push_swap *ps, t_list **lst);
 /* PRINTS */
 void	ft_print_id(t_list *lst);
 void	ft_print_content(t_list *lst);
