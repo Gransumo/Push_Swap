@@ -1,16 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcastro- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 21:09:04 by gcastro-          #+#    #+#             */
+/*   Updated: 2023/11/17 21:09:08 by gcastro-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 static int	*ft_parse_int(char *n)
 {
 	int	*i;
-	//ft_printf ("%s", n);
+
 	i = (int *)malloc (sizeof(int));
 	if (i == NULL)
 		return (NULL);
 	*i = ft_atoi (n);
-	//ft_printf ("\t\t\t%s\t%d\n", n, ft_atoi (n));
 	free (n);
 	return (i);
+}
+
+static void	add_values(t_push_swap *ps, char **args)
+{
+	int		i;
+	int		*node_value;
+
+	i = 0;
+	node_value = NULL;
+	while (args[i])
+	{
+		node_value = ft_parse_int (args[i]);
+		if (node_value == NULL)
+		{
+			ft_free (args);
+			delete_data(ps);
+			error (EC_MALLOC_ERROR);
+		}
+		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
+		i++;
+	}
+	free(args);
 }
 
 static void	set_id(t_list **lst, int id)
@@ -31,57 +64,11 @@ static void	set_id(t_list **lst, int id)
 	tmp->id = id;
 }
 
-static void	add_values(t_push_swap *ps, char **args)
-{
-	int		i;
-	int		*node_value;
-
-	i = 0;
-	node_value = NULL;
-	//ft_printf ("..%s\t", *args);
-	while (args[i])
-	{
-		//ft_printf ("%s\t", args[i]);
-		node_value = ft_parse_int (args[i]);
-		if (node_value == NULL)
-		{
-			ft_free (args);
-			delete_data(ps);
-			error (EC_MALLOC_ERROR);
-		}
-		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
-		i++;
-	}
-	free(args);
-}
-
-/* static void	add_values(t_push_swap *ps, char *args)
-{
-	//int		i;
-	int		*node_value;
-
-	//i = 0;
-	node_value = NULL;
-	ft_printf ("..%s\t", args);
-		//ft_printf ("%s\t", args[i]);
-		node_value = ft_parse_int (args);
-		if (node_value == NULL)
-		{
-			//ft_free (args);
-			delete_data(ps);
-			error (EC_MALLOC_ERROR);
-		}
-		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
-		//i++;
-	//free(args);
-} */
-
-
-void	init_id(t_list **lst)
+static void	init_id(t_list **lst)
 {
 	t_list	*lst_aux;
 	int		id;
-	
+
 	id = 1;
 	lst_aux = *lst;
 	while (lst_aux)
@@ -105,5 +92,4 @@ void	init_stack(int argc, char **argv, t_push_swap *ps)
 	while (i < argc)
 		add_values (ps, ft_split(argv[i++], ' '));
 	init_id(&ps->a);
-	
 }

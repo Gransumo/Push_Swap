@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcastro- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 21:10:19 by gcastro-          #+#    #+#             */
+/*   Updated: 2023/11/17 21:10:20 by gcastro-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 static t_boolean	is_repeat(char **argv)
@@ -14,10 +26,7 @@ static t_boolean	is_repeat(char **argv)
 		while (argv[j])
 		{
 			if (ft_strcmp (argv[i], argv[j]) == 0)
-			{
-				ft_printf ("argv[%i]: %s argv[%i]: %s\n", i, argv[i], j, argv[j]);
 				return (TRUE);
-			}
 			j++;
 		}
 		i++;
@@ -43,20 +52,7 @@ static t_boolean	is_integer(const char *s)
 	return (TRUE);
 }
 
-static void	over_int(const char *s)
-{
-	int	n;
-
-	if (!s)
-		return ;
-	n = ft_atoi (s);
-	if (n > INT_MAX)
-		error (EC_MAX_INT);
-	if (n < INT_MIN)
-		error (EC_MIN_INT);
-}
-
-static t_boolean is_ordeneds(char **argv)
+static t_boolean	is_ordeneds(char **argv)
 {
 	int	i;
 	int	j;
@@ -87,7 +83,6 @@ void	ft_parse(int argc, char **argv)
 	{
 		if (is_integer (argv[i]) == FALSE)
 			error (EC_NOT_INT_FOUND);
-		over_int (argv[i]);
 		i++;
 	}
 	if (is_repeat(argv) == TRUE)

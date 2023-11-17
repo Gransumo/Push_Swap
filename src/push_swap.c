@@ -1,36 +1,49 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   push_swap.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcastro- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 21:09:30 by gcastro-          #+#    #+#             */
+/*   Updated: 2023/11/17 21:10:34 by gcastro-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
-/* void imprimirBinario(int numero)
-{
-    int bits = sizeof(numero) * 2;
-    for (int i = bits - 1; i >= 0; i--) {
-        int bit = (numero >> i) & 1;
-        ft_printf("%d", bit);
-    }
-}
+void		ft_print_content(t_list *lst);
 
-void	print_id_binary(t_list **lst)
+static void	set_order(t_push_swap *ps)
 {
-	t_list	*aux;
 	int		i;
 
-	i = 0;
-	aux = *lst;
-	while (aux)
+	i = ft_lstsize(ps->a);
+	while (i-- != 0)
 	{
-		imprimirBinario(aux->id);
-		ft_printf(" %i\n", *(int *)aux->content);
-		aux = aux->next;
-		i++;
+		if ((ps->a->id & 1) == 0)
+			ft_push(ps, B);
+		else
+			ft_rotate(ps, &ps->a, A);
 	}
-	ft_printf("size: %d\n", i);
-} */
+	while (ps->b)
+		ft_push(ps, A);
+}
 
-void	ft_radix_sort(t_push_swap *ps)
+static void	move_id_bits(t_list *lst)
 {
 	t_list	*aux;
 
-	aux = ps->a;
+	aux = lst;
+	while (aux)
+	{
+		aux->id = aux->id >> 1;
+		aux = aux->next;
+	}
+}
+
+static void	ft_radix_sort(t_push_swap *ps)
+{
 	while (is_finished(ps->a) == FALSE)
 	{
 		set_order(ps);
@@ -46,28 +59,21 @@ t_push_swap	init(int argc, char **argv)
 	ps.b = NULL;
 	ps.moves = 0;
 	init_stack (argc, argv, &ps);
-	init_id(&ps.a);
 	return (ps);
-}
-
-void	ft_leaks(void)
-{
-	system("leaks push_swap");
 }
 
 int	main(int argc, char **argv)
 {
 	t_push_swap	ps;
 
-	atexit(ft_leaks);
-	if (argc < 1 || argc > 501)
+	if (argc <= 1 || argc > 501)
 		error (EC_WRONG_ARGS_NUM);
 	ft_parse(argc, argv);
 	ps = init(argc, argv);
-	//exceptions(&ps);
-	ft_radix_sort(&ps);
+	if (exceptions(&ps) == FALSE)
+		ft_radix_sort(&ps);
 	ft_print_content(ps.a);
-	ft_printf("moves: %d\n", ps.moves);
+	ft_printf("\nmoves: %d\n", ps.moves);
 	delete_data(&ps);
 	error(FINISH_PROGRAM);
 	return (0);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gcastro- <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/11/17 21:10:03 by gcastro-          #+#    #+#             */
+/*   Updated: 2023/11/17 21:10:05 by gcastro-         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "push_swap.h"
 
 t_boolean	is_finished(t_list *lst)
@@ -36,7 +48,7 @@ void	ft_free(char **m)
 	free (m);
 }
 
-int	get_lst_index(t_list *lst_head, t_list *node)
+int	get_lst_index(t_list *lst_head, int id)
 {
 	int		index;
 	t_list	*aux;
@@ -45,7 +57,7 @@ int	get_lst_index(t_list *lst_head, t_list *node)
 	aux = lst_head;
 	while (aux)
 	{
-		if (aux == node)
+		if (aux->id == id)
 			return (index);
 		index++;
 		aux = aux->next;
