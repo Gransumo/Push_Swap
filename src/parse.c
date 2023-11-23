@@ -17,7 +17,7 @@ static t_boolean	is_repeat(char **argv)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	if (!argv)
 		return (FALSE);
 	while (argv[i])
@@ -43,9 +43,12 @@ static t_boolean	is_integer(const char *s)
 		return (FALSE);
 	while (s[i])
 	{
-		if (ft_isdigit (s[i]) == 0 && s[i] != '-')
-			return (FALSE);
-		if (s[i] == '-' && i != 0)
+		if ((s[i] == '-' || s[i] == '+') && i == 0)
+		{
+			i++;
+			continue ;
+		}
+		if (ft_isdigit (s[i]) == 0)
 			return (FALSE);
 		i++;
 	}
@@ -57,7 +60,7 @@ static t_boolean	is_ordeneds(char **argv)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	if (!argv)
 		return (FALSE);
 	while (argv[i])
@@ -74,19 +77,22 @@ static t_boolean	is_ordeneds(char **argv)
 	return (TRUE);
 }
 
-void	ft_parse(int argc, char **argv)
+t_boolean	ft_parse(char **input)
 {
-	int	i;
+	int				i;
 
-	i = 1;
-	while (i < argc)
+	i = 0;
+	while (input[i])
 	{
-		if (is_integer (argv[i]) == FALSE)
-			error (EC_NOT_INT_FOUND);
+		if (is_integer (input[i]) == FALSE)
+			return (FALSE);
+		else if (ft_atoi (input[i]) == 0 && ft_strcmp (input[i], "0") != 0)
+			return (FALSE);
 		i++;
 	}
-	if (is_repeat(argv) == TRUE)
-		error (EC_NUM_REPEAT);
-	if (is_ordeneds(argv) == TRUE)
-		error (EC_STACK_IS_ORDENED);
+	if (is_repeat(input) == TRUE)
+		return (FALSE);
+	if (is_ordeneds(input) == TRUE)
+		return (FALSE);
+	return (TRUE);
 }

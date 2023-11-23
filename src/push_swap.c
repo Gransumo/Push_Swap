@@ -24,7 +24,7 @@ static void	set_order(t_push_swap *ps)
 		if ((ps->a->id & 1) == 0)
 			ft_push(ps, B);
 		else
-			ft_rotate(ps, &ps->a, A);
+			ft_rotate(&ps->a, A);
 	}
 	while (ps->b)
 		ft_push(ps, A);
@@ -51,30 +51,35 @@ static void	ft_radix_sort(t_push_swap *ps)
 	}
 }
 
-t_push_swap	init(int argc, char **argv)
+t_push_swap	*init(int argc, char **argv)
 {
-	t_push_swap	ps;
+	t_push_swap	*ps;
+	char		**argv_aux;
 
-	ps.a = NULL;
-	ps.b = NULL;
-	ps.moves = 0;
-	init_stack (argc, argv, &ps);
+	ps = (t_push_swap *)malloc (sizeof(t_push_swap));
+	ps->a = NULL;
+	ps->b = NULL;
+	argv_aux = argv_join(argc, argv);
+	if (argv_aux == NULL)
+		error (ps);
+	if (ft_parse(argv_aux) == FALSE)
+	{
+		ft_free(argv_aux);
+		error (ps);
+	}
+	init_stack (argv_aux, ps);
 	return (ps);
 }
 
 int	main(int argc, char **argv)
 {
-	t_push_swap	ps;
+	t_push_swap	*ps;
 
-	if (argc <= 1 || argc > 501)
-		error (EC_WRONG_ARGS_NUM);
-	ft_parse(argc, argv);
+	ps = NULL;
+	if (argc < 2 || argc > 501)
+		error (ps);
 	ps = init(argc, argv);
-	if (exceptions(&ps) == FALSE)
-		ft_radix_sort(&ps);
-	ft_print_content(ps.a);
-	ft_printf("\nmoves: %d\n", ps.moves);
-	delete_data(&ps);
-	error(FINISH_PROGRAM);
+	if (exceptions(ps) == FALSE)
+		ft_radix_sort(ps);
 	return (0);
 }

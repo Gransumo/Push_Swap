@@ -20,30 +20,7 @@ static int	*ft_parse_int(char *n)
 	if (i == NULL)
 		return (NULL);
 	*i = ft_atoi (n);
-	free (n);
 	return (i);
-}
-
-static void	add_values(t_push_swap *ps, char **args)
-{
-	int		i;
-	int		*node_value;
-
-	i = 0;
-	node_value = NULL;
-	while (args[i])
-	{
-		node_value = ft_parse_int (args[i]);
-		if (node_value == NULL)
-		{
-			ft_free (args);
-			delete_data(ps);
-			error (EC_MALLOC_ERROR);
-		}
-		ft_lstadd_back (&ps->a, ft_lstnew (node_value));
-		i++;
-	}
-	free(args);
 }
 
 static void	set_id(t_list **lst, int id)
@@ -84,12 +61,45 @@ static void	init_id(t_list **lst)
 	}
 }
 
-void	init_stack(int argc, char **argv, t_push_swap *ps)
+char	**argv_join(int argc, char **argv)
 {
 	int		i;
+	char	*input;
+	char	*result;
+	char	**split;
 
-	i = 1;
-	while (i < argc)
-		add_values (ps, ft_split(argv[i++], ' '));
+	split = NULL;
+	i = 0;
+	result = "";
+	while (++i < argc)
+	{
+		input = ft_strjoin(argv[i], " ");
+		result = ft_strjoin(result, input);
+		free(input);
+	}
+	split = ft_split(result, ' ');
+	free(result);
+	return (split);
+}
+
+void	init_stack(char **input, t_push_swap *ps)
+{
+	int	i;
+	int	*node_content;
+
+	node_content = NULL;
+	i = 0;
+	while (input[i])
+	{
+		node_content = ft_parse_int (input[i]);
+		if (node_content == NULL)
+		{
+			ft_free(input);
+			error (ps);
+		}
+		ft_lstadd_back (&ps->a, ft_lstnew (node_content));
+		i++;
+	}
 	init_id(&ps->a);
+	ft_free(input);
 }

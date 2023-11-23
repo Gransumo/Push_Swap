@@ -44,7 +44,7 @@ void	ft_free(char **m)
 
 	i = 0;
 	while (m[i])
-		free (m[i]);
+		free (m[i++]);
 	free (m);
 }
 
@@ -63,4 +63,16 @@ int	get_lst_index(t_list *lst_head, int id)
 		aux = aux->next;
 	}
 	return (-1);
+}
+
+int	matrix_size(char **m)
+{
+	int	i;
+
+	i = 0;
+	if (!m)
+		return (0);
+	while (m[i])
+		i++;
+	return (i);
 }
