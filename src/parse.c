@@ -43,7 +43,8 @@ static t_boolean	is_integer(const char *s)
 		return (FALSE);
 	while (s[i])
 	{
-		if ((s[i] == '-' || s[i] == '+') && i == 0)
+		if ((s[i] == '-' || s[i] == '+' || \
+		(s[i] >= '\t' && s[i] <= '\r')) && i == 0)
 		{
 			i++;
 			continue ;

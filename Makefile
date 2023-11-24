@@ -1,19 +1,22 @@
 CC		= gcc
-CFLAGS	= -Wall -Werror -Wextra -fsanitize=address -g
+CFLAGS	= -Wall -Werror -Wextra #-fsanitize=address -g
 RM		= rm -f
 NAME	= push_swap
-SRCS	= push_swap.c error.c parse.c utils.c moves.c init.c prints.c exceptions.c
-OBJS	= ${SRCS:.c=.o}
 
 AR		= ar rc
 
-LIBFT_DIR	= ../libft/
+SRCS_A	= push_swap.c error.c parse.c utils.c moves.c init.c exceptions.c
+SRCS	= $(addprefix src/, $(SRCS_A))
+
+LIBFT_DIR	= ./libft/
 LIBFT_A		= libft.a
 LIBFT		= $(addprefix $(LIBFT_DIR), $(LIBFT_A))
 
-PRINTF_PATH	= ../libft/Printf/
+PRINTF_PATH	= ./libft/Printf/
 PRINTF_A	= printf.a
 PRINTF		= $(addprefix $(PRINTF_PATH), $(PRINTF_A))
+
+OBJS	= ${SRCS:.c=.o}
 
 all:	${NAME}
 
@@ -26,6 +29,7 @@ ${NAME}:	${OBJS}
 
 clean:
 	${RM} ${OBJS} ${OBJS_B}
+	$(MAKE) -C $(LIBFT_DIR) clean
 fclean:	clean
 	${RM} ${NAME}
 	$(MAKE) -C $(LIBFT_DIR) fclean

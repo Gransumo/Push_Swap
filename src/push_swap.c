@@ -50,6 +50,11 @@ static void	ft_radix_sort(t_push_swap *ps)
 		move_id_bits(ps->a);
 	}
 }
+/* 
+void	ft_leaks()
+{
+	system("leaks -q push_swap");
+} */
 
 t_push_swap	*init(int argc, char **argv)
 {
@@ -59,9 +64,11 @@ t_push_swap	*init(int argc, char **argv)
 	ps = (t_push_swap *)malloc (sizeof(t_push_swap));
 	ps->a = NULL;
 	ps->b = NULL;
+	if (!ps)
+		error (ps);
 	argv_aux = argv_join(argc, argv);
 	if (argv_aux == NULL)
-		error (ps);
+		return (NULL);
 	if (ft_parse(argv_aux) == FALSE)
 	{
 		ft_free(argv_aux);
@@ -70,6 +77,11 @@ t_push_swap	*init(int argc, char **argv)
 	init_stack (argv_aux, ps);
 	return (ps);
 }
+
+/* void	ft_leaks()
+{
+	system("leaks -q push_swap");
+} */
 
 int	main(int argc, char **argv)
 {
@@ -81,5 +93,6 @@ int	main(int argc, char **argv)
 	ps = init(argc, argv);
 	if (exceptions(ps) == FALSE)
 		ft_radix_sort(ps);
+	delete_data(ps);
 	return (0);
 }

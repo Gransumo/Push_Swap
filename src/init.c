@@ -66,20 +66,21 @@ char	**argv_join(int argc, char **argv)
 	int		i;
 	char	*input;
 	char	*result;
-	char	**split;
+	char	*tmp;
 
-	split = NULL;
 	i = 0;
-	result = "";
+	result = ft_strdup("");
+	if (result == NULL)
+		return (NULL);
 	while (++i < argc)
 	{
 		input = ft_strjoin(argv[i], " ");
-		result = ft_strjoin(result, input);
+		tmp = ft_strjoin(result, input);
 		free(input);
+		free(result);
+		result = tmp;
 	}
-	split = ft_split(result, ' ');
-	free(result);
-	return (split);
+	return (free(tmp), ft_split(result, ' '));
 }
 
 void	init_stack(char **input, t_push_swap *ps)

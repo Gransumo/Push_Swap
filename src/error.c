@@ -18,6 +18,8 @@ void	delete_data(t_push_swap *ps)
 		ft_lstclear(&ps->a, free);
 	if (ps->b != NULL)
 		ft_lstclear(&ps->b, free);
+	if (ps != NULL)
+		free(ps);
 }
 
 void	error(t_push_swap *ps)

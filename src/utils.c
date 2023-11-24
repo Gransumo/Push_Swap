@@ -64,7 +64,7 @@ int	get_lst_index(t_list *lst_head, int id)
 	}
 	return (-1);
 }
-
+/* 
 int	matrix_size(char **m)
 {
 	int	i;
@@ -75,4 +75,4 @@ int	matrix_size(char **m)
 	while (m[i])
 		i++;
 	return (i);
-}
+} */
